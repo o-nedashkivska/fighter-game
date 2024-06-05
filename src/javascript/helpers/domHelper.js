@@ -10,3 +10,10 @@ export default function createElement({ tagName, className, attributes = {} }) {
 
     return element;
 }
+
+export function createElementWithTextContent({ textContent, ...args }) {
+    const element = createElement(args);
+    element.textContent = textContent;
+
+    return element;
+}
