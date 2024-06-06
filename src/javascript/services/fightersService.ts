@@ -1,5 +1,16 @@
 import callApi from '../helpers/apiHelper';
 
+export interface Fighter {
+    '_id': string;
+    name: string;
+    'health': number;
+    'attack': number;
+    'defense': number;
+    'source': string;
+}
+
+export type FighterPosition = 'left' | 'right';
+
 class FighterService {
     #endpoint = 'fighters.json';
 
@@ -14,7 +25,7 @@ class FighterService {
         }
     }
 
-    async getFighterDetails(id) {
+    async getFighterDetails(id: string): Promise<Fighter> {
         try {
             const fighterEndpoint = this.resolveFighterEndpoint(id);
             const apiResult = await callApi(fighterEndpoint);
@@ -24,7 +35,7 @@ class FighterService {
         }
     }
 
-    resolveFighterEndpoint(id) {
+    resolveFighterEndpoint(id: string): string {
         return this.#fighterEndpoint.replace('id', id);
     }
 }

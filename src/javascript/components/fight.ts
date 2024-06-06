@@ -1,40 +1,45 @@
 import controls from '../../constants/controls';
 import { showAttackImage, showBlockImage, showCritImage } from './arenaActions';
 import { reduceHealthBar, playerOneCriticalHitAvailable, playerTwoCriticalHitAvailable } from './fightUtils';
+import { Fighter } from '../services/fightersService';
 
-export function getHitPower(fighter) {
+interface EventKeys {
+    [key: string]: boolean;
+}
+
+export function getHitPower(fighter: Fighter) {
     const criticalHitChance = Math.random() + 1;
     const power = fighter.attack * criticalHitChance;
     return power;
 }
 
-export function getBlockPower(fighter) {
+export function getBlockPower(fighter: Fighter) {
     const dodgeChance = Math.random() + 1;
     const power = fighter.defense * dodgeChance;
     return power;
 }
 
-export function getDamage(attacker, defender) {
+export function getDamage(attacker: Fighter, defender: Fighter) {
     const damage = getHitPower(attacker) - getBlockPower(defender);
     return damage < 0 ? 0 : damage;
 }
 
-function getTotalDamage(attacker, defender, withBlock) {
+function getTotalDamage(attacker: Fighter, defender: Fighter, withBlock: boolean) {
     if (withBlock) {
         return getDamage(attacker, defender);
     }
     return getHitPower(attacker);
 }
 
-function getCritDamage(fighter) {
+function getCritDamage(fighter: Fighter) {
     return 2 * fighter.attack;
 }
 
-export async function fight(firstFighter, secondFighter) {
+export async function fight(firstFighter: Fighter, secondFighter: Fighter): Promise<Fighter> {
     return new Promise(resolve => {
         let firstFighterCurrentHealth = firstFighter.health;
         let secondFighterCurrentHealth = secondFighter.health;
-        const keys = {};
+        const keys: EventKeys = {};
         const {
             PlayerOneAttack,
             PlayerOneBlock,
@@ -44,7 +49,7 @@ export async function fight(firstFighter, secondFighter) {
             PlayerTwoCriticalHitCombination
         } = controls;
 
-        function handleKeyDown(event) {
+        function handleKeyDown(event: KeyboardEvent) {
             keys[event.code] = true;
 
             if (keys[PlayerOneBlock]) {
@@ -115,7 +120,7 @@ export async function fight(firstFighter, secondFighter) {
             }
         }
 
-        function handleKeyUp(event) {
+        function handleKeyUp(event: KeyboardEvent) {
             keys[event.code] = false;
         }
 

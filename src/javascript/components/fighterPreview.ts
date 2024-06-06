@@ -1,6 +1,7 @@
 import createElement, { createElementWithTextContent } from '../helpers/domHelper';
+import { Fighter, FighterPosition } from '../services/fightersService';
 
-export function createFighterImage(fighter) {
+export function createFighterImage(fighter: Fighter) {
     const { source, name } = fighter;
     const attributes = {
         src: source,
@@ -16,7 +17,7 @@ export function createFighterImage(fighter) {
     return imgElement;
 }
 
-export function createFighterPreview(fighter, position) {
+export function createFighterPreview(fighter: Fighter | undefined, position: FighterPosition) {
     const positionClassName = position === 'right' ? 'fighter-preview___right' : 'fighter-preview___left';
     const fighterElement = createElement({
         tagName: 'div',

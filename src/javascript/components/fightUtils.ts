@@ -1,10 +1,18 @@
-export function reduceHealthBar({ position, maxHealth, damage }) {
+import { FighterPosition } from '../services/fightersService';
+
+interface ReduceHealthBarArgs {
+    position: FighterPosition;
+    maxHealth: number;
+    damage: number;
+}
+
+export function reduceHealthBar({ position, maxHealth, damage }: ReduceHealthBarArgs) {
     const healthReduction = (damage / maxHealth) * 100;
 
-    const healthBarElement = document.getElementById(`${position}-fighter-indicator`);
+    const healthBarElement = document.getElementById(`${position}-fighter-indicator`) as HTMLDivElement;
     const currentHealthBarWidth = healthBarElement.style.width || '100%';
 
-    let newHealthBarWidth = currentHealthBarWidth.slice(0, -1) - healthReduction;
+    let newHealthBarWidth = +currentHealthBarWidth.slice(0, -1) - healthReduction;
     if (newHealthBarWidth < 0) newHealthBarWidth = 0;
 
     healthBarElement.style.width = `${newHealthBarWidth}%`;

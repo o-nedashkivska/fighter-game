@@ -2,9 +2,9 @@ import createFighters from './components/fightersView';
 import fighterService from './services/fightersService';
 
 class App {
-    static rootElement = document.getElementById('root');
+    static rootElement = document.getElementById('root') as HTMLDivElement;
 
-    static loadingElement = document.getElementById('loading-overlay');
+    static loadingElement = document.getElementById('loading-overlay') as HTMLDivElement;
 
     static async startApplication() {
         try {

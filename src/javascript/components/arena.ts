@@ -2,8 +2,9 @@ import createElement from '../helpers/domHelper';
 import { createFighterImage } from './fighterPreview';
 import { fight } from './fight';
 import showWinnerModal from './modal/winner';
+import { Fighter, FighterPosition } from '../services/fightersService';
 
-function createFighter(fighter, position) {
+function createFighter(fighter: Fighter, position: FighterPosition) {
     const imgElement = createFighterImage(fighter);
     const positionClassName = position === 'right' ? 'arena___right-fighter' : 'arena___left-fighter';
     const fighterElement = createElement({
@@ -15,7 +16,7 @@ function createFighter(fighter, position) {
     return fighterElement;
 }
 
-function createFighters(firstFighter, secondFighter) {
+function createFighters(firstFighter: Fighter, secondFighter: Fighter) {
     const battleField = createElement({ tagName: 'div', className: `arena___battlefield` });
     const firstFighterElement = createFighter(firstFighter, 'left');
     const secondFighterElement = createFighter(secondFighter, 'right');
@@ -24,7 +25,7 @@ function createFighters(firstFighter, secondFighter) {
     return battleField;
 }
 
-function createHealthIndicator(fighter, position) {
+function createHealthIndicator(fighter: Fighter, position: FighterPosition) {
     const { name } = fighter;
     const container = createElement({ tagName: 'div', className: 'arena___fighter-indicator' });
     const fighterName = createElement({ tagName: 'span', className: 'arena___fighter-name' });
@@ -42,7 +43,7 @@ function createHealthIndicator(fighter, position) {
     return container;
 }
 
-function createHealthIndicators(leftFighter, rightFighter) {
+function createHealthIndicators(leftFighter: Fighter, rightFighter: Fighter) {
     const healthIndicators = createElement({ tagName: 'div', className: 'arena___fight-status' });
     const versusSign = createElement({ tagName: 'div', className: 'arena___versus-sign' });
     const leftFighterIndicator = createHealthIndicator(leftFighter, 'left');
@@ -52,7 +53,7 @@ function createHealthIndicators(leftFighter, rightFighter) {
     return healthIndicators;
 }
 
-function createArena(selectedFighters) {
+function createArena(selectedFighters: [Fighter, Fighter]) {
     const arena = createElement({ tagName: 'div', className: 'arena___root' });
     const healthIndicators = createHealthIndicators(...selectedFighters);
     const fighters = createFighters(...selectedFighters);
@@ -61,15 +62,15 @@ function createArena(selectedFighters) {
     return arena;
 }
 
-export default function renderArena(selectedFighters) {
-    const root = document.getElementById('root');
+export default function renderArena(selectedFighters: [Fighter, Fighter]) {
+    const root = document.getElementById('root') as HTMLDivElement;
     const arena = createArena(selectedFighters);
 
     root.innerHTML = '';
     root.append(arena);
 
     fight(...selectedFighters)
-        .then(winner => {
+        .then((winner: Fighter) => {
             showWinnerModal(winner);
         })
         .catch(error => {

@@ -15,21 +15,21 @@ const SECURITY_HEADERS = {
 
 const useMockAPI = true;
 
-function getFighterById(endpoint) {
+function getFighterById(endpoint: string) {
     const start = endpoint.lastIndexOf('/');
     const end = endpoint.lastIndexOf('.json');
     const id = endpoint.substring(start + 1, end);
     return fightersDetails.find(it => it._id === id);
 }
 
-async function fakeCallApi(endpoint) {
+async function fakeCallApi(endpoint: string) {
     const response = endpoint === 'fighters.json' ? fighters : getFighterById(endpoint);
     return new Promise((resolve, reject) => {
         setTimeout(() => (response ? resolve(response) : reject(Error('Failed to load'))), 500);
     });
 }
 
-export default async function callApi(endpoint, method = 'GET') {
+export default async function callApi(endpoint: string, method = 'GET') {
     const url = BASE_API_URL + endpoint;
     const options = { method, ...SECURITY_HEADERS };
 

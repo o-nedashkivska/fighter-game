@@ -1,14 +1,22 @@
 import createElement from '../../helpers/domHelper';
 
+type OnCloseHandler = () => void;
+
+interface ModalArgs {
+    title: string;
+    bodyElement: HTMLElement;
+    onClose: OnCloseHandler;
+}
+
 function getModalContainer() {
-    return document.getElementById('root');
+    return document.getElementById('root') as HTMLDivElement;
 }
 function hideModal() {
     const modal = document.getElementsByClassName('modal-layer')[0];
     modal?.remove();
 }
 
-function createHeader(title, onClose) {
+function createHeader(title: string, onClose: OnCloseHandler) {
     const headerElement = createElement({ tagName: 'div', className: 'modal-header' });
     const titleElement = createElement({ tagName: 'span' });
     const closeButton = createElement({ tagName: 'div', className: 'close-btn' });
@@ -26,7 +34,7 @@ function createHeader(title, onClose) {
     return headerElement;
 }
 
-function createModal({ title, bodyElement, onClose }) {
+function createModal({ title, bodyElement, onClose }: ModalArgs) {
     const layer = createElement({ tagName: 'div', className: 'modal-layer' });
     const modalContainer = createElement({ tagName: 'div', className: 'modal-root' });
     const header = createHeader(title, onClose);
@@ -37,7 +45,7 @@ function createModal({ title, bodyElement, onClose }) {
     return layer;
 }
 
-export default function showModal({ title, bodyElement, onClose = () => {} }) {
+export default function showModal({ title, bodyElement, onClose = () => {} }: ModalArgs) {
     const root = getModalContainer();
     const modal = createModal({ title, bodyElement, onClose });
 

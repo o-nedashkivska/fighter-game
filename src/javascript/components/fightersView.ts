@@ -1,7 +1,8 @@
 import createElement from '../helpers/domHelper';
-import { createFightersSelector } from './fighterSelector';
+import { SelectFighterFn, createFightersSelector } from './fighterSelector';
+import { Fighter } from '../services/fightersService';
 
-function createImage(fighter) {
+function createImage(fighter: Fighter) {
     const { source, name } = fighter;
     const attributes = {
         src: source,
@@ -17,10 +18,10 @@ function createImage(fighter) {
     return imgElement;
 }
 
-function createFighter(fighter, selectFighter) {
+function createFighter(fighter: Fighter, selectFighter: SelectFighterFn) {
     const fighterElement = createElement({ tagName: 'div', className: 'fighters___fighter' });
     const imageElement = createImage(fighter);
-    const onClick = event => selectFighter(event, fighter._id);
+    const onClick = (event: MouseEvent) => selectFighter(event, fighter._id);
 
     fighterElement.append(imageElement);
     fighterElement.addEventListener('click', onClick, false);
@@ -28,7 +29,7 @@ function createFighter(fighter, selectFighter) {
     return fighterElement;
 }
 
-export default function createFighters(fighters) {
+export default function createFighters(fighters: [Fighter, Fighter]) {
     const selectFighter = createFightersSelector();
     const container = createElement({ tagName: 'div', className: 'fighters___root' });
     const preview = createElement({ tagName: 'div', className: 'preview-container___root' });
