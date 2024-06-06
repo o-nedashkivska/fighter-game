@@ -1,4 +1,5 @@
 import controls from '../../constants/controls';
+import { showAttackImage, showBlockImage, showCritImage } from './arenaActions';
 import { reduceHealthBar, playerOneCriticalHitAvailable, playerTwoCriticalHitAvailable } from './fightUtils';
 
 export function getHitPower(fighter) {
@@ -46,7 +47,15 @@ export async function fight(firstFighter, secondFighter) {
         function handleKeyDown(event) {
             keys[event.code] = true;
 
+            if (keys[PlayerOneBlock]) {
+                showBlockImage('left');
+            }
+            if (keys[PlayerTwoBlock]) {
+                showBlockImage('right');
+            }
             if (!keys[PlayerOneBlock] && keys[PlayerOneAttack]) {
+                showAttackImage('left');
+
                 const damage = getTotalDamage(firstFighter, secondFighter, keys[PlayerTwoBlock]);
                 secondFighterCurrentHealth -= damage;
                 reduceHealthBar({
@@ -54,7 +63,10 @@ export async function fight(firstFighter, secondFighter) {
                     maxHealth: secondFighter.health,
                     damage
                 });
-            } else if (!keys[PlayerTwoBlock] && keys[PlayerTwoAttack]) {
+            }
+            if (!keys[PlayerTwoBlock] && keys[PlayerTwoAttack]) {
+                showAttackImage('right');
+
                 const damage = getTotalDamage(secondFighter, firstFighter, keys[PlayerOneBlock]);
                 firstFighterCurrentHealth -= damage;
                 reduceHealthBar({
@@ -62,10 +74,12 @@ export async function fight(firstFighter, secondFighter) {
                     maxHealth: firstFighter.health,
                     damage
                 });
-            } else if (PlayerOneCriticalHitCombination.includes(event.code)) {
+            }
+            if (PlayerOneCriticalHitCombination.includes(event.code)) {
                 const isCriticalHitCombination = PlayerOneCriticalHitCombination.every(critCode => keys[critCode]);
 
                 if (isCriticalHitCombination && playerOneCriticalHitAvailable()) {
+                    showCritImage('left');
                     const damage = getCritDamage(firstFighter);
                     secondFighterCurrentHealth -= damage;
                     reduceHealthBar({
@@ -74,10 +88,12 @@ export async function fight(firstFighter, secondFighter) {
                         damage
                     });
                 }
-            } else if (PlayerTwoCriticalHitCombination.includes(event.code)) {
+            }
+            if (PlayerTwoCriticalHitCombination.includes(event.code)) {
                 const isCriticalHitCombination = PlayerTwoCriticalHitCombination.every(critCode => keys[critCode]);
 
                 if (isCriticalHitCombination && playerTwoCriticalHitAvailable()) {
+                    showCritImage('right');
                     const damage = getCritDamage(secondFighter);
                     firstFighterCurrentHealth -= damage;
                     reduceHealthBar({

@@ -61,3 +61,17 @@
   width: 100%;
   background-color: #ebd759;
 }
+
+.arena___action {
+  position: absolute;
+  top: 25vh;
+  height: 200px
+}
+
+.arena___action-right {
+  right: 25vw;
+}
+
+.arena___action-left {
+  left: 25vw;
+}
